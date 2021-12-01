@@ -1,14 +1,3 @@
-/*
-
-This is how an item object should look like
-
-{
-  id: 1, // <- the item id matches the icon name in the assets/icons folder
-  name: "beetroot",
-  price: 0.35 // <- You can come up with your own prices
-}
-
-*/
 
 const state = {
   items: [
@@ -74,12 +63,18 @@ function addZeros(number) {
 }
 
 
+function addToCart(item){
+  state.items.filter(function (addItemsToCart){
+   return addItemsToCart.name === item.name
+  })
+}
+
 //* <ul class="item-list store--item-list"> */
 function storeItemList(){
-for(const item of state.items){
   const itemListUlEl = document.querySelector('.item-list.store--item-list')
+  itemListUlEl.innerHTML = ``
+for(const item of state.items){
   const storeLiEl = document.createElement('li')
-
 
 const storedivIconEl = document.createElement('div')
 storedivIconEl.setAttribute('class', 'store--item-icon')
@@ -90,6 +85,10 @@ storeimgEl.setAttribute('alt', `${item.name}`)
 
 const storeBnEl = document.createElement('button')
 storeBnEl.textContent = 'Add to cart'
+storeBnEl.addEventListener('click', function(){
+  addToCart(item);
+  render()
+})
 
 storedivIconEl.append(storeimgEl)
 storeLiEl.append(storedivIconEl,storeBnEl)
@@ -99,7 +98,8 @@ itemListUlEl.append(storeLiEl)
 
 //* <ul class="item-list cart--item-list"> */
 function cartItmelList(){
-  for(const item of state.items){
+  // for(const item of state.items){
+   const item = state.items 
 const itemListUlEl = document.querySelector('main .item-list')
 const cartLiEl = document.createElement('li')
 
@@ -124,13 +124,12 @@ CartraddBTnEl.textContent = '+'
 
 cartLiEl.append(imgCartEl, pEl, CartremoveBTnEl, CartSpanEl, CartraddBTnEl )
 itemListUlEl.append(cartLiEl)
-  }
+  
 }
-
+// }
 
 function render(){
   storeItemList()
   cartItmelList()
 }
 render()
-// renderSvg ()
