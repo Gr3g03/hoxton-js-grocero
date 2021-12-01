@@ -29,7 +29,7 @@ const state = {
 },
 {
   id: 4,
-  name: 'apricon',
+  name: 'apricot',
   price: 1
 },
 {
@@ -44,7 +44,7 @@ const state = {
 },
 {
   id: 7,
-  name: 'bell pepper',
+  name: 'bell-pepper',
   price: 1
 },
 {
@@ -59,31 +59,34 @@ const state = {
 },
 {
 id : 10, 
-name: 'egplant',
+name: 'eggplant',
 price: 1
 }
 ]
 }
 
-function renderSvg (svgrender){
-  for (const element of svgrender){
-    storeItemList(element)
-  }
+
+
+function addZeros(number) {
+  const str = "" + number;
+  const pad = "000";
+  return pad.substring(0, pad.length - str.length) + str;
 }
 
 
 //* <ul class="item-list store--item-list"> */
 function storeItemList(){
-const itemListUlEl = document.querySelector('header .item-list')
+for(const item of state.items){
+  const itemListUlEl = document.querySelector('.item-list.store--item-list')
+  const storeLiEl = document.createElement('li')
 
-const storeLiEl = document.createElement('li')
 
 const storedivIconEl = document.createElement('div')
 storedivIconEl.setAttribute('class', 'store--item-icon')
 
 const storeimgEl = document.createElement('img')
-storeimgEl.setAttribute('src', 'assets/icons/001-beetroot.svg')
-storeimgEl.setAttribute('alt', 'beetroot')
+storeimgEl.setAttribute('src', `assets/icons/${addZeros(item.id)}-${item.name}.svg`)
+storeimgEl.setAttribute('alt', `${item.name}`)
 
 const storeBnEl = document.createElement('button')
 storeBnEl.textContent = 'Add to cart'
@@ -91,18 +94,19 @@ storeBnEl.textContent = 'Add to cart'
 storedivIconEl.append(storeimgEl)
 storeLiEl.append(storedivIconEl,storeBnEl)
 itemListUlEl.append(storeLiEl)
-
-
 }
+}
+
 //* <ul class="item-list cart--item-list"> */
 function cartItmelList(){
+  for(const item of state.items){
 const itemListUlEl = document.querySelector('main .item-list')
 const cartLiEl = document.createElement('li')
 
 const imgCartEl = document.createElement('img')
 imgCartEl.setAttribute('class', 'cart--item-icon')
-imgCartEl.setAttribute('src', 'assets/icons/001-beetroot.svg')
-imgCartEl.setAttribute('alt', 'beetroot')
+imgCartEl.setAttribute('src', `assets/icons/${addZeros(item.id)}-${item.name}.svg`)
+imgCartEl.setAttribute('alt', `${item.name}`)
 
 const pEl = document.createElement  ('p')
 
@@ -120,6 +124,7 @@ CartraddBTnEl.textContent = '+'
 
 cartLiEl.append(imgCartEl, pEl, CartremoveBTnEl, CartSpanEl, CartraddBTnEl )
 itemListUlEl.append(cartLiEl)
+  }
 }
 
 
@@ -128,3 +133,4 @@ function render(){
   cartItmelList()
 }
 render()
+// renderSvg ()
