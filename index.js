@@ -1,5 +1,5 @@
 
-let cartListItems = []
+// let cartListItems = []
 
 const state = {
   items: [
@@ -12,13 +12,13 @@ const state = {
 {
   id: 2,
   name: 'carrot',
-  price: 1,
+  price: 2,
   quantity: 0
 },
 {
   id: 3,
   name: 'apple',
-  price: 1,
+  price: 3,
   quantity: 0
 },
 {
@@ -64,9 +64,20 @@ price: 1,
 quantity: 0
 }
 ],
-cartListItems: []
+
+  cartListItems: []
 }
 
+
+function addproduct(item){
+  for(const cartItems of state.cartListItems){
+    if(item.name === cartItems.name){
+      cartItems.quantity++
+    }
+  }
+  state.cartListItems.push(item)
+  item.quantity++
+}
 
 function addZeros(number) {
   const str = "" + number;
@@ -77,23 +88,25 @@ const totalProductSum = document.querySelector('.total-number')
 
 function getSum(){
   let  sum = 0
-  let price = state.cartListItems
-  for(const element of cartListItems){
-  sum = sum + element.price 
+  for(const element of state.cartListItems){
+  sum += element.price * element.quantity
   }
   totalProductSum.textContent = `£${sum}`
 
 }
-getSum()
 
-function increaseQuantity (){
-  cartListItems.quantity++
+
+function increaseQuantity (item){
+ item.quantity++
 }
 
 
-function decreaseQuantity (){
-  cartListItems.quantity--
+function decreaseQuantity (item){
+  if(item.quantity > 0)
+  item.quantity--
 }
+
+
 
 
 //* <ul class="item-list store--item-list"> */
@@ -113,12 +126,8 @@ storeimgEl.setAttribute('alt', `${item.name}`)
 const storeBnEl = document.createElement('button')
 storeBnEl.textContent = 'Add to cart'
 storeBnEl.addEventListener('click', function(){
-  
-  if(item.quantity  <= 0){
-    cartListItems.push(state.items[(item.id)-1])
-    item.quantity++ }
-    else item.quantity--
-    cartItmelList(item)
+  addproduct(item)
+  render()
 })
 
 storedivIconEl.append(storeimgEl)
@@ -131,7 +140,7 @@ itemListUlEl.append(storeLiEl)
 function cartItmelList(item){
   const itemListUlEl = document.querySelector('main .item-list')
   itemListUlEl.innerHTML = ``
-  for(const item of cartListItems){
+  for(const item of state.cartListItems){
 const cartLiEl = document.createElement('li')
 
 const imgCartEl = document.createElement('img')
@@ -148,7 +157,7 @@ CartremoveBTnEl.textContent = '-'
 
 const CartSpanEl = document.createElement('span')
 CartSpanEl.setAttribute('class', 'quantity-text center')
-CartSpanEl.textContent = '1'
+CartSpanEl.textContent = item.quantity
 
 const CartraddBTnEl = document.createElement ('button')
 CartraddBTnEl.setAttribute('class', 'quantity-btn add-btn center')
@@ -156,34 +165,21 @@ CartraddBTnEl.textContent = '+'
 
 
 cartLiEl.append(imgCartEl, pEl, CartremoveBTnEl, CartSpanEl, CartraddBTnEl )
-itemListUlEl.append(cartLiEl, totalProductSum)
+itemListUlEl.append(cartLiEl)
   
 CartremoveBTnEl.addEventListener('click', function(){
-
-  const i =1
   let spanNr = Number(CartSpanEl.textContent)
-  spanNr -= i
   CartSpanEl.textContent = spanNr
   if (spanNr === 0){
     cartLiEl.remove()
   }
-
-  // increaseQuantity ()
-  decreaseQuantity ()
-
+  decreaseQuantity (item)
+  render()
 })
 CartraddBTnEl.addEventListener('click', function(){
-
-  // const i =1
-  // let spanNr = Number(CartSpanEl.textContent)
-  // spanNr += i
-  // CartSpanEl.textContent = spanNr
-
-  increaseQuantity ()
-  // decreaseQuantity ()
+  increaseQuantity (item)
+  render()
 })
-getSum()
-
 }
 }
 
@@ -192,5 +188,7 @@ getSum()
 function render(){
   storeItemList()
   cartItmelList()
+  getSum()
+
 }
 render()
