@@ -82,18 +82,17 @@ function getSum(){
   sum = sum + element.price 
   }
   totalProductSum.textContent = `£${sum}`
-  // sum = sum + price
-  // totalProductSum.textContent = `£${sum}`
+
 }
 getSum()
 
 function increaseQuantity (){
-  cartListItems --
+  cartListItems.quantity++
 }
 
 
 function decreaseQuantity (){
-  cartListItems ++
+  cartListItems.quantity--
 }
 
 
